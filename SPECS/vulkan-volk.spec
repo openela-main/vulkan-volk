@@ -1,19 +1,17 @@
 %global debug_package %{nil}
 
 Name:           vulkan-volk
-Version:        1.3.270
+Version:        1.3.283.0
 Release:        1%{?dist}
 Summary:        Meta loader for Vulkan API
 
 License:        MIT
 URL:            https://github.com/zeux/volk
-Source0:        %url/archive/refs/tags/%{version}.tar.gz
+Source0:        %url/archive/vulkan-sdk-%{version}.tar.gz#/Vulkan-Volk-sdk-%{version}.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  cmake3
 BuildRequires:  vulkan-headers
-
-Conflicts: volk
 
 %description
 %{summary}
@@ -22,12 +20,13 @@ Conflicts: volk
 Summary:        Development files for %{name}
 Provides:       %{name}-static = %{version}-%{release}
 Requires:       vulkan-headers
+Conflicts:      volk-devel
 
 %description    devel
 %{summary}
 
 %prep
-%autosetup -n volk-%{version} -p1
+%autosetup -n volk-vulkan-sdk-%{version} -p1
 
 %build
 %cmake3 -DCMAKE_BUILD_TYPE=Release \
@@ -41,11 +40,15 @@ Requires:       vulkan-headers
 %files devel
 %license LICENSE.md
 %doc README.md
+%dir %{_libdir}/cmake/volk
 %{_includedir}/volk.h
 %{_includedir}/volk.c
 %{_libdir}/cmake/volk/*.cmake
 %{_libdir}/libvolk.a
 
 %changelog
+* Tue May 28 2024 José Expósito <jexposit@redhat.com> - 1.3.283.0-1
+- Update to 1.3.283.0 SDK
+
 * Thu Jan 11 2024 José Expósito <jexposit@redhat.com> - 1.3.270-1
 - Version 1.3.270
